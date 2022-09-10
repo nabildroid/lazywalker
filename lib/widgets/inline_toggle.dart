@@ -21,20 +21,22 @@ class InlineToggle extends StatelessWidget {
           label,
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.white54,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
           ),
         ),
         SizedBox(
-          width: 8,
+          width: 16,
         ),
         Container(
           width: 30,
           height: 30,
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(4)),
+              color: Colors.white70, borderRadius: BorderRadius.circular(4)),
           child: Center(
-            child: Icon(Icons.currency_exchange_rounded),
+            child: Icon(
+              isSelected
+                  ? Icons.battery_6_bar_outlined
+                  : Icons.battery_1_bar_outlined,
+            ),
           ),
         ),
       ]),

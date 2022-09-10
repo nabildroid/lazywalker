@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lazywalker/cubes/setting_cubit.dart';
 import 'package:lazywalker/cubes/sim_cubit.dart';
 import 'package:lazywalker/cubes/walks_cubit.dart';
@@ -39,7 +40,9 @@ void backgroundHandlerV2() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  flutterLocalNotificationsPlugin = await initNotification();
+  if (Platform.isAndroid) {
+    flutterLocalNotificationsPlugin = await initNotification();
+  }
 
   runApp(MyApp(
     sharedPreferences: await SharedPreferences.getInstance(),
@@ -112,13 +115,18 @@ showDjezzyBackgroundNotification(
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final SharedPreferences sharedPreferences;
   const MyApp({Key? key, required this.sharedPreferences}) : super(key: key);
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
-    final db = LocalDB(sharedPreferences);
+    final db = LocalDB(widget.sharedPreferences);
     return MultiBlocProvider(
       providers: [
         BlocProvider<SettingCubit>(
@@ -134,6 +142,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Lazy Walker',
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          textTheme: GoogleFonts.robotoTextTheme(),
+        ),
         home: Home1(),
       ),
     );
@@ -206,7 +217,7 @@ Future<bool> djezzyBackgroundTask({
         await djezzy.walkAndWin(offer);
       } catch (e) {
         // todo save the error to Log;
-        isSuccess = true;
+        isSuccess = false;
       }
 
       walkes.add(Walk(

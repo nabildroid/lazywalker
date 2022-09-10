@@ -55,40 +55,60 @@ class _VerticalSettingParamterState extends State<VerticalSettingParamter> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.label),
-        InkWell(
-          onTap: () {
-            showDialog(
-              builder: (context) => SimpleDialog(
-                title: Text(widget.label),
-                children: <Widget>[
-                  ValueListenableBuilder(
-                    builder: (context, value, _) {
-                      return NumberPicker(
-                        value: value as int,
-                        minValue: widget.min,
-                        maxValue: widget.max,
-                        zeroPad: true,
-                        step: widget.step,
-                        haptics: true,
-                        onChanged: (value) {
-                          valueNotifier.value = value;
-                        },
-                      );
-                    },
-                    valueListenable: valueNotifier,
+        Text(
+          widget.label,
+          style: TextStyle(
+            color: Colors.white.withOpacity(.8),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              showDialog(
+                builder: (context) => SimpleDialog(
+                  title: Text(widget.label),
+                  children: <Widget>[
+                    ValueListenableBuilder(
+                      builder: (context, value, _) {
+                        return NumberPicker(
+                          value: value as int,
+                          minValue: widget.min,
+                          maxValue: widget.max,
+                          zeroPad: true,
+                          step: widget.step,
+                          haptics: true,
+                          onChanged: (value) {
+                            valueNotifier.value = value;
+                          },
+                        );
+                      },
+                      valueListenable: valueNotifier,
+                    ),
+                  ],
+                ),
+                context: context,
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  widget.icon,
+                  color: Colors.white38,
+                ),
+                SizedBox(width: 6),
+                Text(
+                  "${valueNotifier.value} ${widget.sefix}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
-              context: context,
-            );
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(widget.icon),
-              Text("${valueNotifier.value} ${widget.sefix}")
-            ],
+                )
+              ],
+            ),
           ),
         )
       ],

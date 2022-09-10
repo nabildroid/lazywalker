@@ -20,8 +20,8 @@ class DjezzyAuth {
 
   Future<Response<dynamic>> post(String url,
       {Map<String, String>? headers, Object? body, Encoding? encoding}) {
-    return Dio().post(
-      "https://copy.laknabil.me/log/now/lazy/" + url,
+    return client.post(
+      url,
       data: body,
       options: Options(
         headers: {

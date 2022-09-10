@@ -10,14 +10,6 @@ import 'package:lazywalker/models/walk.dart';
 import 'package:lazywalker/repositories/djezzy.dart';
 import 'package:lazywalker/repositories/djezzy_auth.dart';
 import 'package:lazywalker/repositories/local_db.dart';
-import 'package:lazywalker/repositories/upstash.dart';
+import 'package:lazywalker/repositories/station.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
-
-Future<void> syncBagroundTask() async {
-  final now = DateTime.now();
-  final db = LocalDB(await SharedPreferences.getInstance());
-
-  final redis = UpStash(Client(), authToken: KeysConstants.upStash);
-  // todo delete unwanted phone number, upload the Walks success rate,
-}

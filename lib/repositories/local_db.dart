@@ -4,6 +4,7 @@ import 'package:lazywalker/models/app_settings.dart';
 import 'package:lazywalker/models/check_phone.dart';
 import 'package:lazywalker/models/walk.dart';
 import 'package:lazywalker/repositories/djezzy_auth.dart';
+import 'package:lazywalker/repositories/station.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalDB {
@@ -99,5 +100,21 @@ class LocalDB {
       "lastCheckedPhoneNumber",
       jsonEncode(checked.toJson()),
     );
+  }
+
+  Future<void> saveStationMetadata(StationMetadata metadata) async {
+    await _db.setString(
+      "stationMetadata",
+      jsonEncode(metadata.toJson()),
+    );
+  }
+
+  Future<StationMetadata?> getStationMetadata() async {
+    final data = _db.getString("stationMetadata");
+    if (data != null) {
+      return StationMetadata.fromJson(jsonDecode(data));
+    } else {
+      return null;
+    }
   }
 }

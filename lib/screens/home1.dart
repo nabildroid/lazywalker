@@ -11,7 +11,9 @@ import '../services/background.dart';
 import '../widgets/appbar_title.dart';
 import '../widgets/expandable_top_section.dart';
 import '../widgets/inline_toggle.dart';
+import '../widgets/quick_settings.dart';
 import '../widgets/sim_card.dart';
+import '../widgets/sim_list.dart';
 import '../widgets/vertical_setting_parameter.dart';
 
 class Home1 extends StatefulWidget {
@@ -47,142 +49,9 @@ class _Home1State extends State<Home1> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       body: ExpandableTopSection(
-        maxRatio: .55,
-        minRatio: .35,
-        topSection: Container(
-          padding: EdgeInsets.only(top: AppBar().preferredSize.height),
-          decoration: BoxDecoration(
-            color: Colors.purple.shade600,
-            borderRadius:
-                BorderRadius.vertical(bottom: Radius.elliptical(40, 30)),
-          ),
-          child: Column(children: [
-            SizedBox(
-              height: 150,
-              child: BlocBuilder<SimCubit, SimState>(
-                builder: (context, state) {
-                  final phones = state.authenticatedPhoneNumbers;
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (ctx, i) {
-                      if (i == phones.length) {
-                        return SimCard.template(
-                            onTap: () => {
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      pageBuilder: ((context, animation,
-                                              secondaryAnimation) =>
-                                          AddSim()),
-                                      opaque: false,
-                                    ),
-                                  )
-                                });
-                      }
-                      return SimCard(
-                        phoneNumber: phones[i].phoneNumber,
-                        time: phones[i].created,
-                        onTap: () => {},
-                      );
-                    },
-                    itemCount: phones.length + 1,
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                BlocBuilder<SettingCubit, SettingState>(
-                    builder: (context, state) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      VerticalSettingParamter(
-                        label: "Interval",
-                        value: state.appSetting.interval,
-                        icon: Icons.short_text_sharp,
-                        max: 30,
-                        min: 2,
-                        onChange: (v) =>
-                            context.read<SettingCubit>().setInterval(v),
-                        step: 1,
-                        sefix: "days",
-                      ),
-                      VerticalSettingParamter(
-                        label: "Time",
-                        value: state.appSetting.time.hour,
-                        icon: Icons.timer,
-                        max: 23,
-                        min: 0,
-                        onChange: (v) => context
-                            .read<SettingCubit>()
-                            .setTime(TimeOfDay(hour: v, minute: 0)),
-                        step: 1,
-                        sefix: state.appSetting.time.period == DayPeriod.am
-                            ? "AM"
-                            : "PM",
-                      ),
-                      VerticalSettingParamter(
-                        label: "Repetition",
-                        value: state.appSetting.repetition,
-                        icon: Icons.repeat,
-                        max: 10,
-                        min: 1,
-                        onChange: (v) =>
-                            context.read<SettingCubit>().setRepetition(v),
-                        step: 1,
-                        sefix: "times",
-                      ),
-                    ],
-                  );
-                }),
-                Spacer(),
-                BlocBuilder<SettingCubit, SettingState>(
-                    builder: (context, state) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InlineToggle(
-                        isSelected: state.appSetting.offers
-                            .contains(DjezzyWalkOfferOptions.g1),
-                        label: "1 GB",
-                        select: () => context
-                            .read<SettingCubit>()
-                            .toggleOffer(DjezzyWalkOfferOptions.g1),
-                      ),
-                      InlineToggle(
-                        isSelected: state.appSetting.offers
-                            .contains(DjezzyWalkOfferOptions.g2),
-                        label: "2 GB",
-                        select: () => context
-                            .read<SettingCubit>()
-                            .toggleOffer(DjezzyWalkOfferOptions.g2),
-                      ),
-                      InlineToggle(
-                        isSelected: state.appSetting.offers
-                            .contains(DjezzyWalkOfferOptions.g4),
-                        label: "4 GB",
-                        select: () => context
-                            .read<SettingCubit>()
-                            .toggleOffer(DjezzyWalkOfferOptions.g4),
-                      ),
-                      InlineToggle(
-                        isSelected: state.appSetting.offers
-                            .contains(DjezzyWalkOfferOptions.g6),
-                        label: "6 GB",
-                        select: () => context
-                            .read<SettingCubit>()
-                            .toggleOffer(DjezzyWalkOfferOptions.g6),
-                      ),
-                    ],
-                  );
-                })
-              ],
-            )
-          ]),
-        ),
+        maxRatio: .8,
+        minRatio: .4,
+        topSection: QuitSettings(),
         bottomSection: Column(
           children: [
             Expanded(child:

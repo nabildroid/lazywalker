@@ -85,6 +85,7 @@ class SimCubit extends Cubit<SimState> {
         authenticatedPhoneNumber,
       ],
       loadingForAuthentication: false,
+      stagedPhoneNumber: "",
     ));
 
     return true;

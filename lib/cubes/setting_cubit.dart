@@ -149,8 +149,10 @@ class SettingCubit extends Cubit<SettingState> {
       await Workmanager().registerPeriodicTask(
         djezzyTask,
         djezzyTask,
-        // frequency: Duration(hours: 5),
-        initialDelay: const Duration(seconds: 5),
+        frequency: Duration(
+          hours: newSettings.interval,
+        ),
+        initialDelay: const Duration(minutes: 1),
         backoffPolicy: BackoffPolicy.linear,
         backoffPolicyDelay: const Duration(minutes: 15),
         constraints: Constraints(
